@@ -12,3 +12,4 @@ class LoginPage:
         self.username.fill(user_name)
         self.password.fill(password)
         self.login_button.click()
+        self.page.wait_for_timeout(3000)
