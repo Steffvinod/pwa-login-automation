@@ -1,3 +1,5 @@
+from playwright.sync_api import expect
+
 class LoginPage:
     def __init__(self, page):
         self.page = page
@@ -9,13 +11,15 @@ class LoginPage:
         self.page.goto("https://pwa.skordev.com/#/login")
 
     def login(self, user_name, password):
-        self.username.fill(user_name)
-        self.password.fill(password)
+        self.username.click()
+        self.username.press_sequentially(user_name)
 
-        self.password.press("Tab")
+        self.password.click()
+        self.password.press_sequentially(password)
+
         self.page.wait_for_timeout(2000)
 
-        print("Login button enabled:", self.login_button.is_enabled())
+        expect(self.login_button).to_be_enabled(timeout=10000)
 
         self.login_button.click()
-        self.page.wait_for_timeout(3000)
+        self.page.wait_for_timeout(5000)
