@@ -1,25 +1,24 @@
-from playwright.sync_api import expect
+def login(self, user_name, password):
+    self.username.click()
+    self.username.fill("")
+    self.username.type(user_name, delay=100)
 
-class LoginPage:
-    def __init__(self, page):
-        self.page = page
-        self.username = page.locator("#loginId")
-        self.password = page.locator("input[type=\"password\"]")
-        self.login_button = page.get_by_role("button", name="Login")
+    self.password.click()
+    self.password.fill("")
+    self.password.type(password, delay=100)
 
-    def open(self):
-        self.page.goto("https://pwa.skordev.com/#/login")
+    self.password.press("Tab")
+    self.page.wait_for_timeout(3000)
 
-    def login(self, user_name, password):
-        self.username.click()
-        self.username.press_sequentially(user_name)
+    print("Username value:", self.username.input_value())
+    print("Password value:", self.password.input_value())
+    print("Login button enabled:", self.login_button.is_enabled())
+    print("Login button text:", self.login_button.inner_text())
 
-        self.password.click()
-        self.password.press_sequentially(password)
+    self.page.locator("body").click()
+    self.page.wait_for_timeout(1000)
 
-        self.page.wait_for_timeout(2000)
+    print("Login button enabled after body click:", self.login_button.is_enabled())
 
-        expect(self.login_button).to_be_enabled(timeout=10000)
-
-        self.login_button.click()
-        self.page.wait_for_timeout(5000)
+    self.login_button.click()
+    self.page.wait_for_timeout(5000)
