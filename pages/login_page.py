@@ -1,3 +1,5 @@
+from playwright.sync_api import expect
+
 class LoginPage:
     def __init__(self, page):
         self.page = page
@@ -18,17 +20,6 @@ class LoginPage:
         self.password.type(password, delay=100)
 
         self.password.press("Tab")
-        self.page.wait_for_timeout(3000)
 
-        print("Username value:", self.username.input_value())
-        print("Password value:", self.password.input_value())
-        print("Login button enabled:", self.login_button.is_enabled())
-        print("Login button text:", self.login_button.inner_text())
-
-        self.page.locator("body").click()
-        self.page.wait_for_timeout(1000)
-
-        print("Login button enabled after body click:", self.login_button.is_enabled())
-
+        expect(self.login_button).to_be_enabled(timeout=10000)
         self.login_button.click()
-        self.page.wait_for_timeout(5000)
